@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 import Head from"../Headr/Headr"
 import { Photo } from "../photoDes/Photo";
+
 import {Description } from"../description/dscription"
 import "../MoreButtenPage/des.css"
 
