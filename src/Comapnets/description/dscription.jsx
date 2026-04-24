@@ -24,13 +24,15 @@ export const Description = ({ item }) => {
          
           <h1>
             <span className="rate">
-              Rate: <span>{item.vote_average}</span>
+              Rate: <span>{item.vote_average}</span>  
+            </span>
+            <div className="ic">
               {Array(Math.round(item.vote_average))
                 .fill(0)
                 .map((_, index) => (
                   <img key={index} src={startIcon} id="iconStart" />
                 ))}
-            </span>
+                 </div>
           </h1>
           <h1 />
           <h1 className="numbercount">
