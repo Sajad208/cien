@@ -1,0 +1,140 @@
+/* ===== PAGINATION NAV ===== */
+.pagination-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 24px 0 32px;
+    width: 100%;
+}
+
+.pagination-inner {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #161616;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
+    padding: 8px 12px;
+}
+
+/* ===== SHARED BUTTON ===== */
+.pg-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    border-radius: 8px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.18s ease, color 0.18s ease, transform 0.12s ease;
+    line-height: 1;
+}
+
+/* ===== NUMBER BUTTONS ===== */
+.pg-num {
+    width: 38px;
+    height: 38px;
+}
+
+.pg-num:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+}
+
+.pg-num:active {
+    transform: scale(0.93);
+}
+
+/* ===== ACTIVE PAGE ===== */
+.pg-num.pg-active {
+    background: #c0392b;
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 0 14px rgba(192, 57, 43, 0.5);
+    cursor: default;
+}
+
+.pg-num.pg-active:hover {
+    background: #c0392b;
+}
+
+/* ===== ARROW BUTTONS ===== */
+.pg-arrow {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.pg-arrow:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+}
+
+.pg-arrow:active:not(:disabled) {
+    transform: scale(0.9);
+}
+
+.pg-arrow:disabled {
+    opacity: 0.2;
+    cursor: not-allowed;
+}
+
+/* ===== DIVIDER BETWEEN ARROWS AND PAGES ===== */
+.pg-arrow:first-child {
+    margin-right: 4px;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    padding-right: 10px;
+    border-radius: 0;
+    width: auto;
+}
+
+.pg-arrow:last-child {
+    margin-left: 4px;
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    padding-left: 10px;
+    border-radius: 0;
+    width: auto;
+}
+
+/* ===== ELLIPSIS ===== */
+.pg-ellipsis {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.25);
+    font-size: 13px;
+    letter-spacing: 1px;
+    user-select: none;
+}
+
+/* ===== PAGE LABEL ===== */
+.pg-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.25);
+    letter-spacing: 0.5px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    direction: rtl;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+    .pagination-inner {
+        gap: 3px;
+        padding: 6px 8px;
+    }
+
+    .pg-num,
+    .pg-arrow {
+        width: 32px;
+        height: 32px;
+        font-size: 13px;
+    }
+}
