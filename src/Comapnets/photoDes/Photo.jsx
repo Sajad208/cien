@@ -1,4 +1,5 @@
 import StartIcon from "../../assets/icons8-star-48.png";
+import "../photoDes/photo.css"
 export const Photo = ({ item }) => {
   return (
     <>
