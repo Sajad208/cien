@@ -4,7 +4,7 @@ import "./Pagination.css";
 export const Pagination = ({ pag, setPag }) => {
   const pageSize = 3;
   const currentPage = Math.floor((pag - pageSize) / pageSize) + 1;
-  const totalPages = 165;
+  const totalPages = 163;
 
   const getPageNumbers = () => {
     const pages = [];
