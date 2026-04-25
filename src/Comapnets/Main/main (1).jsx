@@ -36,7 +36,7 @@ export const Main = ({ searchResults }) => {
 console.log(data)
             setLoading(true);
             let allMovies = [];
-            for (let i = 10; i <= 16; i++) {
+            for (let i = 11; i <= 17; i++) {
                 const res = await fetch(
                     `https://api.themoviedb.org/3/movie/popular?api_key=d0dbfaaf9e5a616757c0421b49038b70&page=${pag + i}`
                 );
