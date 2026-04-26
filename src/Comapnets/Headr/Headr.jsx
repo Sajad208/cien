@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaSearch, FaTimes } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import "./Headr.css";
 import prof from "../../assets/prof.jpg";
 
@@ -11,15 +12,14 @@ function Headr({ onSearch }) {
   const [scrolled, setScrolled] = useState(false);
   const inputRef = useRef(null);
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
 
-  // Navbar shrinks on scroll
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClick = (e) => {
       if (
@@ -34,7 +34,6 @@ function Headr({ onSearch }) {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  // Debounced search
   useEffect(() => {
     if (query.trim().length < 2) {
       setResults([]);
@@ -59,10 +58,13 @@ function Headr({ onSearch }) {
     return () => clearTimeout(timer);
   }, [query]);
 
+  // عند اختيار فيلم: يصفّر البحث ويفتح صفحة الفيلم مباشرة
   const handleSelect = (item) => {
-    setQuery(item.title);
+    setQuery("");
+    setResults([]);
     setShowDropdown(false);
-    if (onSearch) onSearch([item]);
+    if (onSearch) onSearch(null);
+    navigate("/des", { state: item });
   };
 
   const handleSubmit = async (e) => {
@@ -91,19 +93,13 @@ function Headr({ onSearch }) {
   return (
     <header className={`Headr ${scrolled ? "Headr--scrolled" : ""}`}>
       <div className="cointer">
-      
         <div className="logo">
           <span className="logo-c">C</span>ien
         </div>
 
-       
         <form className="Serach-div" onSubmit={handleSubmit}>
           <div className="search-wrapper">
-            <FaSearch
-              size={16}
-              className="icon-Srech"
-              onClick={handleSubmit}
-            />
+            <FaSearch size={16} className="icon-Srech" onClick={handleSubmit} />
             <input
               ref={inputRef}
               type="text"
@@ -122,7 +118,6 @@ function Headr({ onSearch }) {
             {loading && <span className="search-spinner" />}
           </div>
 
-         
           {showDropdown && results.length > 0 && (
             <div className="search-dropdown" ref={dropdownRef}>
               {results.map((item) => (
@@ -155,7 +150,6 @@ function Headr({ onSearch }) {
           )}
         </form>
 
-       
         <div className="option">
           <div className="profile">
             <img src={prof} className="Icone" alt="profile" />

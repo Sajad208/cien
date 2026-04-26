@@ -10,6 +10,7 @@ export const Main = ({ searchResults }) => {
     const [movie, setMovies] = useState([]);
     const [current, setCurrent] = useState(0);
     const [paused, setPaused] = useState(false);
+    const [hoveredId, setHoveredId] = useState(null);
     const navigate = useNavigate();
 
     function handelCleck(item) {
@@ -33,7 +34,7 @@ export const Main = ({ searchResults }) => {
             );
             const data = await res.json();
             settrendMovies(data.results);
-console.log(data)
+
             setLoading(true);
             let allMovies = [];
             for (let i = 6; i < 12; i++) {
@@ -71,13 +72,19 @@ console.log(data)
     const isSearching = searchResults !== null;
     const currentMovie = trendMovies[current];
 
+    const genresList = {
+        28: "Action", 12: "Adventure", 16: "Animation", 35: "Comedy",
+        80: "Crime", 18: "Drama", 14: "Fantasy", 27: "Horror",
+        9648: "Mystery", 10749: "Romance", 878: "Sci-Fi", 53: "Thriller", 10752: "War",
+    };
+
     return (
         <>
             {!isSearching && (
                 <div className="slider-section">
                     {trendMovies.length > 0 && currentMovie && (
                         <>
-                         
+                        
                             <div className="slider-bg">
                                 {trendMovies.map((m, i) => (
                                     <img
@@ -90,9 +97,7 @@ console.log(data)
                                 <div className="slider-overlay" />
                             </div>
 
-                            
                             <div className="slider-content">
-                               
                                 <div className="slider-poster-wrap">
                                     <img
                                         src={`https://image.tmdb.org/t/p/w342/${currentMovie.poster_path}`}
@@ -101,52 +106,36 @@ console.log(data)
                                         onClick={() => handelCleck(currentMovie)}
                                     />
                                 </div>
-
-                              
                                 <div className="slider-info">
                                     <div className="slider-meta">
                                         <span className="slider-badge">🔥 الأكثر مشاهدة</span>
-                                        <span className="slider-rating">
-                                            ⭐ {currentMovie.vote_average?.toFixed(1)}
-                                        </span>
-                                        <span className="slider-year">
-                                            {currentMovie.release_date?.slice(0, 4)}
-                                        </span>
+                                        <span className="slider-rating">⭐ {currentMovie.vote_average?.toFixed(1)}</span>
+                                        <span className="slider-year">{currentMovie.release_date?.slice(0, 4)}</span>
                                     </div>
-
                                     <h1 className="slider-title">{currentMovie.title}</h1>
-
                                     <p className="slider-overview">
                                         {currentMovie.overview?.length > 180
                                             ? currentMovie.overview.slice(0, 180) + "..."
                                             : currentMovie.overview}
                                     </p>
-
-                                    <button
-                                        className="slider-cta"
-                                        onClick={() => handelCleck(currentMovie)}
-                                    >
+                                    <button className="slider-cta" onClick={() => handelCleck(currentMovie)}>
                                         <span className="slider-cta-icon">▶</span>
                                         عرض تفاصيل الفيلم
                                     </button>
                                 </div>
                             </div>
 
-                          
                             <button className="slider-nav slider-nav--prev" onClick={goPrev} aria-label="Previous">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                                     <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                                 </svg>
                             </button>
-
-                           
                             <button className="slider-nav slider-nav--next" onClick={goNext} aria-label="Next">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                                     <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
                                 </svg>
                             </button>
 
-                          
                             <div className="slider-dots">
                                 {trendMovies.slice(0, 10).map((_, i) => (
                                     <button
@@ -178,11 +167,60 @@ console.log(data)
                         </div>
                     ) : (
                         displayedMovies.map((item) => (
-                            <li key={item.id} className="card">
+                            <li
+                                key={item.id}
+                                className={`card ${hoveredId === item.id ? "card--hovered" : ""}`}
+                                onMouseEnter={() => setHoveredId(item.id)}
+                                onMouseLeave={() => setHoveredId(null)}
+                            >
                                 <img
                                     src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`}
                                     alt={item.title}
                                 />
+
+                                {/* Hover Overlay */}
+                                <div className="card-hover-overlay">
+                                    <div className="card-hover-content">
+                                        <h2 className="card-hover-title">{item.title}</h2>
+
+                                        <div className="card-hover-meta">
+                                            {item.vote_average > 0 && (
+                                                <span className="card-hover-rating">
+                                                    ⭐ {item.vote_average.toFixed(1)}
+                                                </span>
+                                            )}
+                                            {item.release_date && (
+                                                <span className="card-hover-year">
+                                                    {item.release_date.slice(0, 4)}
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        {item.genre_ids?.length > 0 && (
+                                            <div className="card-hover-genres">
+                                                {item.genre_ids.slice(0, 3).map((id) =>
+                                                    genresList[id] ? (
+                                                        <span key={id} className="card-hover-genre">{genresList[id]}</span>
+                                                    ) : null
+                                                )}
+                                            </div>
+                                        )}
+
+                                        <p className="card-hover-overview">
+                                            {item.overview
+                                                ? item.overview.slice(0, 120) + (item.overview.length > 120 ? "..." : "")
+                                                : "لا يوجد وصف متاح"}
+                                        </p>
+
+                                        <button
+                                            className="card-hover-btn"
+                                            onClick={() => handelCleck(item)}
+                                        >
+                                            عرض التفاصيل ▶
+                                        </button>
+                                    </div>
+                                </div>
+
                                 <div className="titel">
                                     <h1>{item.title}</h1>
                                 </div>
